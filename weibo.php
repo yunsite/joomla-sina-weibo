@@ -1,6 +1,6 @@
 <?php
 /**
- * @version		$Id: weibo.php 198 2011-02-16 09:30:40Z leiy $
+ * @version		$Id$
  * @package		Joomla
  */
 
