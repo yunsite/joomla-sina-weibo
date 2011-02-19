@@ -30,7 +30,7 @@ function cleanText ( &$text )
 }
 
 /*
- * 取得文章发表后的URL，当用户自定义微博文字时，如果包含有%L，则替换成文章的网址
+ * 取得文章发表后的URL，如果当用户自定义微博文字时，如果包含有%L，则替换成文章的网址，此网址由此函数生成
  */
 function getArticleRoute($id, $catid = 0, $sectionid = 0)
 {
@@ -87,17 +87,18 @@ function sendWeibo( $row, $P)
 		$weibotext = $row->title;
 	}else {
 		//  4) 自定义发表文字
-		$link = $root.JRoute::_(getArticleRoute($row->id, $row->catid, $row->sectionid));
+		
+		$link = JRoute::_(getArticleRoute($row->id, $row->catid, $row->sectionid), false);
 		$weibotext = str_replace('%T', $row->title, $P['customstring']);
 		$weibotext = str_replace('%F', $row->introtext . '<br>'. $row->fulltext, $weibotext);
 		$weibotext = str_replace('%I', $row->introtext, $weibotext);
-		$weibotext = str_replace('%L', $link, $weibotext);
+		$weibotext = str_replace('%L', $root.$link, $weibotext);
 	}
 
 	// 检查有无图片
 	$imgfile = false;
 	if ( $P['picsend'] ){
-		if ( preg_match('/<img\ssrc="([^"]+)"/i', $row->introtext . $row->fulltext, $matchs)){
+		if ( preg_match('/<img[^>]*src="([^"]+)"/is', $row->introtext . $row->fulltext, $matchs)){
 			if ( strpos($matchs[1], 'images/') === 0 ) {
 				$picurl = $root.$matchs[1];
 			} else {
