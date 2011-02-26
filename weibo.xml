@@ -38,7 +38,7 @@
 			<option value="onlytitle">Only Title</option>
 			<option value="custom">Custom</option>
 		</param>
-		<param name="customstring" type="text" size="30" default="发表了题为《%T》的博文：%L" label="customstring" description="PARAMCUSTOMSTRING">
+		<param name="customstring" type="text" size="30" default="发表了题为《%T》的博文" label="customstring" description="PARAMCUSTOMSTRING">
 		</param>		
 	</params>
 </install>
