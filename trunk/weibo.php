@@ -10,6 +10,7 @@ defined( '_JEXEC' ) or die( 'Restricted access' );
 $mainframe->registerEvent( 'onAfterContentSave', 'plgWeibo' );
 //$mainframe->registerEvent( 'onAfterContentSave', 'plgWeiboAfter' );
 
+define('WEIBO_LIMIT', 140);
 require_once('weibo.sina.php');
 
 /**
@@ -71,9 +72,7 @@ function sendWeibo( $row, $P)
 		}
 	}
 
-	// 取得网站的root URI
-	$u =& JFactory::getURI();
-	$root = $u->root();
+	
 
 	// 根据微博文字的种类
 	if ( $P['weibotype'] == 'fulltext' ) {
@@ -88,12 +87,19 @@ function sendWeibo( $row, $P)
 	}else {
 		//  4) 自定义发表文字
 		
+		// 取得网站的root URI
+        $u =& JFactory::getURI();
+        $root = $u->root();
 		$link = JRoute::_(getArticleRoute($row->id, $row->catid, $row->sectionid), false);
-		$weibotext = str_replace('%T', $row->title, $P['customstring']);
-		$weibotext = str_replace('%F', $row->introtext . '<br>'. $row->fulltext, $weibotext);
-		$weibotext = str_replace('%I', $row->introtext, $weibotext);
-		$weibotext = str_replace('%L', $root.$link, $weibotext);
+		$weibotext = str_replace('%T', $row->title, $P['customstring']);    // %T 替换成文章的标题
+		$weibotext = str_replace('%F', $row->introtext . '<br>'. $row->fulltext, $weibotext); // %F 替换成文章的全文
+		$weibotext = str_replace('%I', $row->introtext, $weibotext);  // %I 替换为引言
+		$weibotext = str_replace('%H', $root, $weibotext);   // %H 替换为网站网址
+		$weibotext = str_replace('%L', $root.$link, $weibotext); // %L （ALPAH）替换成此文章的URL，此功能尚有BUG
 	}
+	
+	// 因为新浪微博限制字数为140字，删去多出部分
+	$weibotext = mb_substr($weibotext, 0, WEIBO_LIMIT, 'utf-8'); 
 
 	// 检查有无图片
 	$imgfile = false;
