@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="utf-8"?>
+<install version="1.5" type="plugin" group="content">
+	<name>Content - Weibo</name>
+	<author>YuLei</author>
+	<creationDate>Feb 2011</creationDate>
+	<copyright>Copyleft (C) 2011 YuLei. No  rights reserved.</copyright>
+	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
+	<authorEmail>yulei_vsc@yahoo.com.cn</authorEmail>
+	<authorUrl>http://blog.sina.com.cn/yuleishanghai</authorUrl>
+	<version>0.5.0</version>
+	<description>DESCCONTENTWEIBO</description>
+	<files>
+		<filename plugin="weibo">weibo.php</filename>
+		<filename plugin="weibo">weibo.sina.php</filename>
+		<filename plugin="weibo">weibo.tencent.php</filename>
+	</files>
+	<languages>
+		<language tag="zh-CN">zh-CN.plg_content_weibo.ini</language>
+	</languages>
+
+	<params>
+		<param name="sinaenabled" type="radio" default="1" label="Enable Sina Weibo" description="PARAMENABLEDSINA">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="account" type="text" size="20" label="Account" description="PARAMACCOUNTNAME">
+		</param>
+		<param name="password" type="password" size="20" label="Password" description="PARAMACCOUNTPASSWORD">
+		</param>
+		<param name="tencentenabled" type="radio" default="1" label="Enable Tencent Weibo" description="PARAMENABLEDTENCENT">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="spacer" type="spacer" default="腾讯微博不能直接输入用户名和密码，第一次使用请点击下面的连接，进入腾讯认证&lt;br /&gt;（已经认证的再次认证，可以用来更改微博帐户）" />
+		<param name="spacer" type="spacer" default="&lt;a href=&quot;index.php?option=com_weibo&amp;task=tencentauth&quot;  target=&quot;tencentauth&quot; &gt; 点击这里进行腾讯认证&lt;/a&gt;" label="vvvvv" description=""/>
+		<param name="spacer" type="spacer"  />
+		<param name="catid" type="category" 
+			label="Category" description="PARAMCATEGORY" />
+		<param name="picsend" type="radio" default="1" label="Enable Image" description="PARAMSENDPIC">
+			<option value="0">No</option>
+			<option value="1">Yes</option>
+		</param>
+		<param name="weibotype" type="list" label="WeiboType" default="custom" description="PARAMWEIBOTYPE">
+			<option value="fulltext">Full Text</option>
+			<option value="introtext">Intro Text</option>
+			<option value="onlytitle">Only Title</option>
+			<option value="custom">Custom</option>
+		</param>
+		<param name="customstring" type="text" size="30" default="发表了题为《%T》的博文" label="customstring" description="PARAMCUSTOMSTRING">
+		</param>		
+	</params>
+</install>
