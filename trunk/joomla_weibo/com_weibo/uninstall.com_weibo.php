@@ -1,12 +1,15 @@
 <?php
 /**
- * @version         $Id: uninstall.com_weibo.php 222 2011-03-21 16:18:00Z yulei $
+ * @version         $Id: uninstall.com_weibo.php 225 2011-03-23 05:12:11Z leiy $
  */
 
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
+/**
+ * com_weibo 的卸载程序，只删除文件，数据库保留。
+ */
 function com_uninstall(){
 
 	global $mainframe;
@@ -18,13 +21,5 @@ function com_uninstall(){
 	if( !JFolder::delete( $path ) ){
 		$mainframe->enqueueMessage( JText::_('Unable to remove component directory!') );
 	}
-
-	//language/en-GB/en-GB.plg_content_version.ini
-
-	/*$path = JPATH_ROOT .DS. 'language' .DS. 'en-GB'  .DS. 'en-GB.plg_editors-xtd_versioning.ini';
-
-	if( !JFolder::delete( $path ) ){
-	$mainframe->enqueueMessage( JText::_('Unable to remove!' . $path) );
-	}*/
 
 }
