@@ -17,7 +17,9 @@ class HTML_weibo{
 	 */
 	function showTencentAuth(){
 		$o = new MBOpenTOAuth( MB_AKEY , MB_SKEY  );
-		$keys = $o->getRequestToken('http://localhost/joomla1.5.22/joomla/administrator/index.php?option=com_weibo&task=callback');//����������Ļص�URL
+		$u =& JFactory::getURI();
+        $p = $u->base();
+		$keys = $o->getRequestToken($p.'/index.php?option=com_weibo&task=callback');//这是回调的URL 
 		$aurl = $o->getAuthorizeURL( $keys['oauth_token'] ,false,'');
 		$_SESSION['keys'] = $keys;
 		?>
