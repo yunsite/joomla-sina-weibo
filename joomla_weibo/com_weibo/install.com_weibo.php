@@ -1,24 +1,25 @@
 <?php
 /**
- * @version         $Id: install.com_weibo.php 223 2011-03-22 15:33:04Z yulei $
+ * @version         $Id: install.com_weibo.php 274 2011-04-27 10:21:48Z leiy $
  */
 
 // Check to ensure this file is included in Joomla!
 defined('_JEXEC') or die();
 
 /**
- * com_weibo 的安装程序，现在只是为了创建用于在读腾讯认证数据的数据库，
+ * com_weibo 的安装程序，现在只是为了创建用于在读认证数据的数据库，
  */
 function com_install()
 {
 
 	$db  =& JFactory::getDBO();
 
-	$sql = 'CREATE TABLE IF NOT EXISTS `jos_tencentweibo_auth` (
+	$sql = 'CREATE TABLE IF NOT EXISTS `#_weibo_auth` (
   `id` int(11) NOT NULL,
   `oauth_token` varchar(255) NOT NULL,
   `oauth_token_secret` varchar(255) NOT NULL,
   `name` varchar(255) NOT NULL,
+  `type` varchar(10),
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 ';

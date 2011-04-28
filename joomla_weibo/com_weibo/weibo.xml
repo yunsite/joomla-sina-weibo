@@ -20,6 +20,7 @@
 			<filename>admin.weibo.html.php</filename>
 			<filename>admin.weibo.php</filename>
 			<filename>weibo.tencent.php</filename>
+			<filename>weibo.sina.php</filename>
 		</files>
 		<languages>
 		</languages>

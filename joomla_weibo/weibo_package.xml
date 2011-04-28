@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <install type="component" version="1.5.0">
-  <name>weibo_package</name>
+  <name>Weibo Package</name>
 	<author>YuLei</author>
 	<creationDate>March 2011</creationDate>
 	<copyright>Copyleft (C) 2011 YuLei. No rights reserved.</copyright>
 	<license>http://www.gnu.org/licenses/gpl-2.0.html GNU/GPL</license>
 	<authorEmail>yulei_vsc@yahoo.com.cn</authorEmail>
 	<authorUrl>http://blog.sina.com.cn/yuleishanghai</authorUrl>
-	<version>0.5.0</version>
+	<version>0.6.0</version>
 	<description>DESCCONTENTWEIBO</description>
 	<installfile>install.com_weibo_package.php</installfile>
   <description>
