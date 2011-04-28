@@ -1,6 +1,6 @@
 <?php
 /**
- * @version        $Id: weibo.php 219 2011-03-21 15:57:22Z yulei $
+ * @version        $Id: weibo.php 274 2011-04-27 10:21:48Z leiy $
  * @package        Joomla
  */
 
@@ -116,6 +116,7 @@ function getWeiboText( $row, $P, &$weibocontent)
     // 保存返回
     $weibocontent['text'] = $weibotext ;
     $weibocontent['imgfile'] = $imgfile;
+    $weibocontent['imgurl'] = $picurl;
 	
 }
 
@@ -124,20 +125,21 @@ function getWeiboText( $row, $P, &$weibocontent)
  */
 function sendSinaWeibo( $weibocontent, $P)
 {
-
-    // 取得新浪微博对象
-    $weibo = new weibo( '593737441' );
-    $weibo->setUser( $P['account'] , $P['password'] );
-
-    // 如果有图片，上传图片，发表有图片的微博
-    if ( $weibocontent['imgfile'] ){
-        $result = $weibo->upload($weibocontent['text'] , $weibocontent['imgfile'] );
-        $result = $weibo->update($weibocontent['text'] );
-    } else {
-        // 发表没有图片的微博
-        $result = $weibo->update($weibocontent['text'] );
-    }
-
+	
+	// 如果没有新浪的授权，直接返回
+	if ( !$P['sinalastkey']) {
+		return;
+	}
+	$c = new WeiboClient( WB_AKEY , WB_SKEY , $P['sinalastkey']['oauth_token'] , $P['sinalastkey']['oauth_token_secret']  );
+	
+	// 如果有图片，上传图片，发表有图片的微博
+	if ( $weibocontent['imgurl']) {
+		$rtn1 = $c ->upload(  $weibocontent['text'] , $weibocontent['imgurl'] );
+	} else {
+		// 发表没有图片的微博
+		$rtn = $c->update( $weibocontent['text'] );
+	}
+	
 }
 
 /**
@@ -146,21 +148,21 @@ function sendSinaWeibo( $weibocontent, $P)
 function sendTencentWeibo( $weibocontent, $P)
 {
 	// 如果没有腾讯的授权，直接返回
-	if ( !$P['lastkey']) {
+	if ( !$P['tencentlastkey']) {
 		return;
 	}
 	
 	// 准备微博对象
-	$c = new MBApiClient( MB_AKEY , MB_SKEY , $P['lastkey']['oauth_token'] , $P['lastkey']['oauth_token_secret']  );
+	$c = new MBApiClient( MB_AKEY , MB_SKEY , $P['tencentlastkey']['oauth_token'] , $P['tencentlastkey']['oauth_token_secret']  );
 
 	// 如果有图片，上传图片，发表有图片的微博
-	if ( $P['imgfile']) {
+	if ( $weibocontent['imgfile']) {
 		$p =array(
 			'c' => $weibocontent['text'],
 			'ip' => $_SERVER['REMOTE_ADDR'], 
 			'j' => '',
 			'w' => '',
-			'p' => array(null,'pic from joomla',$P['imgfile']),
+			'p' => array(null,'pic from joomla',$weibocontent['imgfile']),
 			'type' => 0
 		);
 	} else {
@@ -198,17 +200,21 @@ function plgWeibo( &$row, $isNew )
     // 参数的设置
     $P['sinaenabled'] = $pluginParams->get( 'sinaenabled' ); //是否启用新浪微博
     if ( $P['sinaenabled']  ) {
-	    $P['account'] = $pluginParams->get('account'); // 新浪微博帐户
-	    $P['password'] = $pluginParams->get('password'); // 新浪微博密码
+    	// 如果启动新浪微博，则取得数据库中存储的新浪微博授权码
+    	$db =& JFactory::getDBO();
+		$sql = "SELECT  oauth_token, oauth_token_secret, name FROM #__weibo_auth WHERE id = '1' AND type='sina'";
+		$db->setQuery( $sql );
+		$result = $db->loadAssoc();
+		$P['sinalastkey'] = $result;
     }
     $P['tencentenabled'] = $pluginParams->get( 'tencentenabled' ); //是否启用腾讯微博
     if ( $P['tencentenabled']  ) {
     	// 如果启动腾讯微博，则取得数据库中存储的腾讯微博授权码
     	$db =& JFactory::getDBO();
-		$sql = "SELECT  oauth_token, oauth_token_secret, name FROM #__tencentweibo_auth WHERE id = '1' ";
+		$sql = "SELECT  oauth_token, oauth_token_secret, name FROM #__weibo_auth WHERE id = '1' AND type='tencent'";
 		$db->setQuery( $sql );
 		$result = $db->loadAssoc();
-		$P['lastkey'] = $result;
+		$P['tencentlastkey'] = $result;
     }
     $P['weibotype'] =  $pluginParams->get('weibotype'); // 微博发表方式（fulltext，onlytitle，introtext或者custom）
     $P['catid'] =  $pluginParams->get('catid'); // 所指定的分类
@@ -226,12 +232,12 @@ function plgWeibo( &$row, $isNew )
     getWeiboText($row, $P, $weibocontent);
     
     // 发送新浪微博
-    if ( $P['sinaenabled'] && $P['account'] ){
+    if ( $P['sinaenabled'] && $P['sinalastkey']  ){
     	sendSinaWeibo( $weibocontent, $P);
     }
     
     // 发送腾讯微博
-	if ( $P['tencentenabled'] && $P['lastkey'] ){
+	if ( $P['tencentenabled'] && $P['tencentlastkey'] ){
     	sendTencentWeibo( $weibocontent, $P);
     }
 
