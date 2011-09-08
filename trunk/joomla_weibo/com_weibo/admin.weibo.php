@@ -49,7 +49,7 @@ function tencentCallback() {
 		$db->Query();
 
 		// 将取得的last_key写入数据库中
-		$sql = "INSERT INTO #__tencentweibo_auth(id,oauth_token,oauth_token_secret,name,type ) VALUES ('1','$last_key[oauth_token]','$last_key[oauth_token_secret]','$last_key[name]','tencent') ";
+		$sql = "INSERT INTO #__weibo_auth(id,oauth_token,oauth_token_secret,name,type ) VALUES ('1','$last_key[oauth_token]','$last_key[oauth_token_secret]','$last_key[name]','tencent') ";
 		$db->setQuery($sql);
 		$db->Query();
 		
@@ -80,7 +80,7 @@ function sinaCallback() {
 		$db->Query();
 
 		// 将取得的last_key写入数据库中
-		$sql = "INSERT INTO #__weibo_auth(id,oauth_token,oauth_token_secret,name,type ) VALUES ('1','$last_key[oauth_token]','$last_key[oauth_token_secret]','$last_key[user_id]', 'sina') ";
+		$sql = "INSERT INTO #__weibo_auth(id,oauth_token,oauth_token_secret,name,type ) VALUES ('2','$last_key[oauth_token]','$last_key[oauth_token_secret]','$last_key[user_id]', 'sina') ";
 		$db->setQuery($sql);
 		$db->Query();
 		
