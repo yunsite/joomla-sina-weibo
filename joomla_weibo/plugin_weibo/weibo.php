@@ -202,7 +202,7 @@ function plgWeibo( &$row, $isNew )
     if ( $P['sinaenabled']  ) {
     	// 如果启动新浪微博，则取得数据库中存储的新浪微博授权码
     	$db =& JFactory::getDBO();
-		$sql = "SELECT  oauth_token, oauth_token_secret, name FROM #__weibo_auth WHERE id = '1' AND type='sina'";
+		$sql = "SELECT  oauth_token, oauth_token_secret, name FROM #__weibo_auth WHERE id = '2' AND type='sina'";
 		$db->setQuery( $sql );
 		$result = $db->loadAssoc();
 		$P['sinalastkey'] = $result;
